@@ -1,1 +1,1 @@
-# React homework - Phonebook(hooks)
+# React homework - Phonebook(redux)
