@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getContacts } from 'redux/contacts/contacts-selectors';
+import contactsActions from 'redux/contacts/contacts-actions';
 import { Form, FormBtn, Input, Label } from './ContactsForm.styled';
-import shortid from 'shortid';
 
-const shId = shortid.generate();
-
-export default function ContactsForm({ addContact }) {
+export default function ContactsForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
 
   const onHandleChange = e => {
     const { name, value } = e.target;
@@ -26,14 +29,31 @@ export default function ContactsForm({ addContact }) {
 
   const onHandleSubmit = e => {
     e.preventDefault();
-    const newContact = {
-      id: shId,
-      name,
-      number,
-    };
-    addContact(newContact);
+
+    const contactCheck = contacts.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase(),
+    );
+
+    if (contactCheck) {
+      reset();
+      alert(`${name} is already in contacts`);
+      return;
+    }
+
+    dispatch(contactsActions.addContact({ name, number }));
     reset();
   };
+
+  // const onHandleSubmit = e => {
+  //   e.preventDefault();
+  //   const newContact = {
+  //     id: shId,
+  //     name,
+  //     number,
+  //   };
+  //   addContact(newContact);
+  //   reset();
+  // };
 
   const reset = () => {
     setName('');

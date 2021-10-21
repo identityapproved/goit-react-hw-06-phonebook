@@ -12,5 +12,4 @@ export const Container = ({ children, title }) => {
 
 Container.propTypes = {
   title: PropTypes.string.isRequired,
-  children: PropTypes.object.isRequired,
 };
